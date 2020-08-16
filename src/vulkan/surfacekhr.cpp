@@ -4,12 +4,12 @@ using namespace Engine::Vulkan;
 
 SurfaceKHR::SurfaceKHR(not_null<Instance *> instance, not_null<VkSurfaceKHR> surface) :
 _surface(surface),
-_instance(instance.get())
+_instance(instance)
 {}
 
 SurfaceKHR::~SurfaceKHR()
 {
-    vkDestroySurfaceKHR(_instance->get(), _surface, nullptr);
+    vkDestroySurfaceKHR(*_instance, _surface, nullptr);
 }
 
 SurfaceKHR SurfaceKHR::create(not_null<Instance *> instance, not_null<Engine::Frontend::Window *> window)

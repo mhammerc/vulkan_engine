@@ -42,6 +42,7 @@ int main()
     // Logical Device
     // I think the logical device own the physical device
     // Should be straightforward as physical device already handle much
+    // Allow move only on Instance, PhysicalDevice, SurfaceKHR, ...
 
     return 0;
 }
