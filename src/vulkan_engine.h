@@ -5,6 +5,8 @@
 
 namespace Engine
 {
+template <class T>
+using not_null = ::gsl::not_null<T>;
 
 using uint8 = uint8_t;
 using byte = std::byte;
