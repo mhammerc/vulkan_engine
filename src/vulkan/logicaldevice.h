@@ -22,12 +22,15 @@ public:
         not_null<VkQueue> transfer;
     };
 
-    [[nodiscard]] LogicalDevice static create(PhysicalDevice &&physicalDevice);
+    /**
+     * `LogicalDevice` will take ownership of a `PhysicalDevice`.
+     */
+    [[nodiscard]] static LogicalDevice create(PhysicalDevice &&physicalDevice);
 
     ~LogicalDevice();
     operator VkDevice() const;
 
-    Queues queues();
+    [[nodiscard]] Queues queues() const;
 
 private:
     LogicalDevice(not_null<VkDevice> device, PhysicalDevice &&physicalDevice, Queues queues);

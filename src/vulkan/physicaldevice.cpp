@@ -7,17 +7,17 @@
 
 using namespace Engine::Vulkan;
 
-std::optional<PhysicalDevice> PhysicalDevice::findBest(Instance &instance, SurfaceKHR &surface)
+std::optional<PhysicalDevice> PhysicalDevice::findBest(not_null<Instance*> instance, not_null<SurfaceKHR*> surface)
 {
     uint32 deviceCount = 0;
-    ThrowError(vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr));
+    ThrowError(vkEnumeratePhysicalDevices(*instance, &deviceCount, nullptr));
 
     std::vector<VkPhysicalDevice> devices {deviceCount};
-    ThrowError(vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data()));
+    ThrowError(vkEnumeratePhysicalDevices(*instance, &deviceCount, devices.data()));
 
     for (auto const &_device : devices)
     {
-        PhysicalDevice device(instance, _device, surface);
+        PhysicalDevice device(_device, instance, surface);
         if (device.isSuitable())
         {
             return device;
@@ -27,10 +27,10 @@ std::optional<PhysicalDevice> PhysicalDevice::findBest(Instance &instance, Surfa
     return std::nullopt;
 }
 
-PhysicalDevice::PhysicalDevice(Instance &instance, gsl::not_null<VkPhysicalDevice> physicalDevice, SurfaceKHR &surface) :
+PhysicalDevice::PhysicalDevice(not_null<VkPhysicalDevice> physicalDevice, not_null<Instance*> instance, not_null<SurfaceKHR*> surface) :
 _physicalDevice(physicalDevice),
-_instance(&instance),
-_surface(&surface)
+_instance(instance),
+_surface(surface)
 {
     discoverAndPopulateDeviceProperties();
     discoverAndPopulateQueueFamilies();
@@ -161,17 +161,17 @@ void PhysicalDevice::discoverAndPopulateDeviceProperties()
     vkGetPhysicalDeviceFeatures(_physicalDevice, &_features);
 }
 
-std::string_view PhysicalDevice::name()
+std::string_view PhysicalDevice::name() const
 {
     return _properties.deviceName;
 }
 
-uint32 PhysicalDevice::version()
+uint32 PhysicalDevice::version() const
 {
     return _properties.apiVersion;
 }
 
-PhysicalDevice::QueueFamilies PhysicalDevice::queueFamilies()
+PhysicalDevice::QueueFamilies PhysicalDevice::queueFamilies() const
 {
     return _queueFamilies;
 }

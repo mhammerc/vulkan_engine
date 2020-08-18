@@ -88,7 +88,7 @@ LogicalDevice::operator VkDevice() const
     return _device;
 }
 
-LogicalDevice::Queues LogicalDevice::queues()
+LogicalDevice::Queues LogicalDevice::queues() const
 {
     return _queues;
 }

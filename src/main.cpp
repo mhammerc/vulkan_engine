@@ -29,7 +29,7 @@ int main()
 
     auto surface = Vulkan::SurfaceKHR::create(&instance, &window);
 
-    auto physicalDevice = Vulkan::PhysicalDevice::findBest(instance, surface);
+    auto physicalDevice = Vulkan::PhysicalDevice::findBest(&instance, &surface);
     if (!physicalDevice.has_value())
     {
         throw std::runtime_error("Could not find any suitable GPU.");
@@ -42,8 +42,6 @@ int main()
 
     auto device = Vulkan::LogicalDevice::create(std::move(*physicalDevice));
     physicalDevice.reset(); // `physicalDevice` is now in a unspecified state.
-
-    spdlog::debug("{}", physicalDevice.has_value());
 
     return 0;
 }

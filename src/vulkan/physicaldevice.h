@@ -13,30 +13,6 @@ namespace Engine::Vulkan
 class PhysicalDevice : public OnlyMovable
 {
 public:
-    /**
-     * Find a suitable GPU to use.
-     *
-     * Requirements are:
-     * - Graphics Queue
-     * - Presenting capability queue (to the surface)
-     * - Availability of device extensions
-     * - Support a leat one surface format
-     * - Feature sampler anisotropy
-     *
-     * A `SurfaceKHR` instance is an abstraction layer to the native surface handle of the windowing system.
-     * It is a required parameter because it allow us to determine which queue family, if any, allow presenting to
-     * that particular surface.
-     *
-     * @param instance
-     * @param surface
-     * @return
-     */
-    [[nodiscard]] static std::optional<PhysicalDevice> findBest(Instance &instance, SurfaceKHR &surface);
-    operator VkPhysicalDevice() const;
-
-    std::string_view name();
-    uint32 version();
-
     static constexpr std::array const requiredDeviceExtensions
     {
         VK_KHR_SWAPCHAIN_EXTENSION_NAME,
@@ -56,24 +32,48 @@ public:
         std::optional<uint32> transfer = std::nullopt;
         std::optional<uint32> present = std::nullopt;
     };
-    QueueFamilies queueFamilies();
+
+    struct SurfaceCapabilities
+    {
+        VkSurfaceCapabilitiesKHR capabilities {};
+        std::vector<VkSurfaceFormatKHR> formats;
+        std::vector<VkPresentModeKHR> presentModes;
+    };
+
+    /**
+     * Find a suitable GPU to use.
+     *
+     * Requirements are:
+     * - Graphics Queue
+     * - Presenting capability queue (to the surface)
+     * - Availability of device extensions
+     * - Support a leat one surface format
+     * - Feature sampler anisotropy
+     *
+     * A `SurfaceKHR` instance is an abstraction layer to the native surface handle of the windowing system.
+     * It is a required parameter because it allow us to determine which queue family, if any, allow presenting to
+     * that particular surface.
+     *
+     * @param instance
+     * @param surface
+     * @return
+     */
+    [[nodiscard]] static std::optional<PhysicalDevice> findBest(not_null<Instance*> instance, not_null<SurfaceKHR*> surface);
+    operator VkPhysicalDevice() const;
+
+    [[nodiscard]] std::string_view name() const;
+    [[nodiscard]] uint32 version() const;
+    [[nodiscard]] QueueFamilies queueFamilies() const;
 
 private:
-    PhysicalDevice(Instance &instance, not_null<VkPhysicalDevice> physicalDevice, SurfaceKHR &surface);
+    PhysicalDevice(not_null<VkPhysicalDevice> physicalDevice, not_null<Instance*> instance, not_null<SurfaceKHR*> surface);
 
     not_null<VkPhysicalDevice> _physicalDevice;
     not_null<Instance *> _instance;
     not_null<SurfaceKHR *> _surface;
 
     QueueFamilies _queueFamilies {};
-
-    struct
-    {
-        VkSurfaceCapabilitiesKHR capabilities {};
-        std::vector<VkSurfaceFormatKHR> formats;
-        std::vector<VkPresentModeKHR> presentModes;
-    } _surfaceCapabilities {};
-
+    SurfaceCapabilities _surfaceCapabilities {};
     VkPhysicalDeviceProperties _properties {};
     VkPhysicalDeviceFeatures _features {};
     bool _areRequiredDeviceExtensionsSupported = false;

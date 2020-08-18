@@ -18,22 +18,6 @@ namespace Engine::Vulkan
 class Instance : public OnlyMovable
 {
 public:
-    /**
-     * Create a Vulkan Instance.
-     *
-     * @param layers Add additional layers on top of `requiredValidationLayers`.
-     * @param extensions Add additional layers on top of `requiredDeviceExtensions`
-     */
-    ~Instance();
-    static Instance create(std::span<char const *> layers = {}, std::span<char const *> extensions = {});
-
-    operator VkInstance() const;
-
-    /**
-     * @return The instance handle.
-     */
-    [[nodiscard]] not_null<VkInstance> get() const;
-
     static constexpr std::array const requiredValidationLayers
     {
 #ifndef NDEBUG
@@ -47,6 +31,19 @@ public:
         VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
 #endif
     };
+
+    /**
+     * Create a Vulkan Instance.
+     *
+     * @param layers Add additional layers on top of `requiredValidationLayers`.
+     * @param extensions Add additional layers on top of `requiredDeviceExtensions`
+     */
+    ~Instance();
+    operator VkInstance() const;
+
+    [[nodiscard]] static Instance create(std::span<char const *> layers = {}, std::span<char const *> extensions = {});
+
+    [[nodiscard]] not_null<VkInstance> get() const;
 
 private:
     Instance(not_null<VkInstance> instance

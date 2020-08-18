@@ -2,7 +2,7 @@
 
 using namespace Engine::Vulkan;
 
-SurfaceKHR::SurfaceKHR(not_null<Instance *> instance, not_null<VkSurfaceKHR> surface) :
+SurfaceKHR::SurfaceKHR(not_null<VkSurfaceKHR> surface, not_null<Instance *> instance) :
 _surface(surface),
 _instance(instance)
 {}
@@ -17,10 +17,10 @@ SurfaceKHR SurfaceKHR::create(not_null<Instance *> instance, not_null<Engine::Fr
     VkSurfaceKHR surfaceHandle = VK_NULL_HANDLE;
     ThrowError(glfwCreateWindowSurface(*instance, window->get(), nullptr, &surfaceHandle));
 
-    return SurfaceKHR(instance, surfaceHandle);
+    return SurfaceKHR(surfaceHandle, instance);
 }
 
-VkSurfaceKHR SurfaceKHR::get()
+VkSurfaceKHR SurfaceKHR::get() const
 {
     return _surface;
 }

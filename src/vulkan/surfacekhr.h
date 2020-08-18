@@ -16,14 +16,15 @@ namespace Engine::Vulkan
 class SurfaceKHR : public OnlyMovable
 {
 public:
-    static SurfaceKHR create(not_null<Instance *> instance, not_null<Engine::Frontend::Window *> window);
     ~SurfaceKHR();
     operator VkSurfaceKHR() const;
 
-    VkSurfaceKHR get();
+    static SurfaceKHR create(not_null<Instance *> instance, not_null<Engine::Frontend::Window *> window);
+
+    [[nodiscard]] VkSurfaceKHR get() const;
 
 private:
-    SurfaceKHR(not_null<Instance *> instance, not_null<VkSurfaceKHR> surface);
+    SurfaceKHR(not_null<VkSurfaceKHR> surface, not_null<Instance *> instance);
 
     not_null<VkSurfaceKHR> _surface;
     not_null<Instance *> _instance;
