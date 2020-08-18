@@ -2,7 +2,6 @@
 # define VULKAN_ENGINE_INSTANCE_H
 
 # include <array>
-# include <gsl/gsl>
 # include <optional>
 # include <span>
 # include <string>
@@ -16,7 +15,7 @@ namespace Engine::Vulkan
  *
  * If debug mode is enabled, it will automatically setup validation layers and debug messengers.
  */
-class Instance
+class Instance : public OnlyMovable
 {
 public:
     /**
@@ -33,7 +32,7 @@ public:
     /**
      * @return The instance handle.
      */
-    [[nodiscard]] gsl::not_null<VkInstance> get() const;
+    [[nodiscard]] not_null<VkInstance> get() const;
 
     static constexpr std::array const requiredValidationLayers
     {

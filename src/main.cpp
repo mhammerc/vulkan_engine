@@ -4,6 +4,7 @@
 #include "frontend/window.h"
 #include "vulkan/instance.h"
 #include "vulkan/physicaldevice.h"
+#include "vulkan/logicaldevice.h"
 #include "vulkan_engine.h"
 
 using namespace Engine;
@@ -39,10 +40,10 @@ int main()
     VK_VERSION_MINOR(physicalDevice->version()),
     VK_VERSION_PATCH(physicalDevice->version()));
 
-    // Logical Device
-    // I think the logical device own the physical device
-    // Should be straightforward as physical device already handle much
-    // Allow move only on Instance, PhysicalDevice, SurfaceKHR, ...
+    auto device = Vulkan::LogicalDevice::create(std::move(*physicalDevice));
+    physicalDevice.reset(); // `physicalDevice` is now in a unspecified state.
+
+    spdlog::debug("{}", physicalDevice.has_value());
 
     return 0;
 }

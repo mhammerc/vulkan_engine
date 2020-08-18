@@ -2,7 +2,6 @@
 # define VULKAN_ENGINE_PHYSICALDEVICE_H
 
 # include <array>
-# include <gsl/gsl>
 # include <optional>
 
 # include "vulkan.h"
@@ -11,10 +10,29 @@
 
 namespace Engine::Vulkan
 {
-class PhysicalDevice
+class PhysicalDevice : public OnlyMovable
 {
 public:
+    /**
+     * Find a suitable GPU to use.
+     *
+     * Requirements are:
+     * - Graphics Queue
+     * - Presenting capability queue (to the surface)
+     * - Availability of device extensions
+     * - Support a leat one surface format
+     * - Feature sampler anisotropy
+     *
+     * A `SurfaceKHR` instance is an abstraction layer to the native surface handle of the windowing system.
+     * It is a required parameter because it allow us to determine which queue family, if any, allow presenting to
+     * that particular surface.
+     *
+     * @param instance
+     * @param surface
+     * @return
+     */
     [[nodiscard]] static std::optional<PhysicalDevice> findBest(Instance &instance, SurfaceKHR &surface);
+    operator VkPhysicalDevice() const;
 
     std::string_view name();
     uint32 version();
@@ -24,6 +42,22 @@ public:
         VK_KHR_SWAPCHAIN_EXTENSION_NAME,
     };
 
+    static constexpr std::array const requiredValidationLayers
+    {
+#ifndef NDEBUG
+        "VK_LAYER_KHRONOS_validation",
+#endif
+    };
+
+    struct QueueFamilies
+    {
+        std::optional<uint32> graphics = std::nullopt;
+        std::optional<uint32> compute = std::nullopt;
+        std::optional<uint32> transfer = std::nullopt;
+        std::optional<uint32> present = std::nullopt;
+    };
+    QueueFamilies queueFamilies();
+
 private:
     PhysicalDevice(Instance &instance, not_null<VkPhysicalDevice> physicalDevice, SurfaceKHR &surface);
 
@@ -31,13 +65,7 @@ private:
     not_null<Instance *> _instance;
     not_null<SurfaceKHR *> _surface;
 
-    struct
-    {
-        std::optional<uint32> graphics = std::nullopt;
-        std::optional<uint32> compute = std::nullopt;
-        std::optional<uint32> transfer = std::nullopt;
-        std::optional<uint32> present = std::nullopt;
-    } _queueFamilies {};
+    QueueFamilies _queueFamilies {};
 
     struct
     {

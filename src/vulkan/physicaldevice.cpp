@@ -13,7 +13,6 @@ std::optional<PhysicalDevice> PhysicalDevice::findBest(Instance &instance, Surfa
     ThrowError(vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr));
 
     std::vector<VkPhysicalDevice> devices {deviceCount};
-
     ThrowError(vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data()));
 
     for (auto const &_device : devices)
@@ -28,8 +27,6 @@ std::optional<PhysicalDevice> PhysicalDevice::findBest(Instance &instance, Surfa
     return std::nullopt;
 }
 
-
-
 PhysicalDevice::PhysicalDevice(Instance &instance, gsl::not_null<VkPhysicalDevice> physicalDevice, SurfaceKHR &surface) :
 _physicalDevice(physicalDevice),
 _instance(&instance),
@@ -39,6 +36,11 @@ _surface(&surface)
     discoverAndPopulateQueueFamilies();
     discoverAndPopulateSurfaceProperties();
     discoverIfDeviceExtensionsAreSupported();
+}
+
+PhysicalDevice::operator VkPhysicalDevice() const
+{
+    return _physicalDevice;
 }
 
 bool PhysicalDevice::isSuitable()
@@ -75,7 +77,7 @@ bool PhysicalDevice::isSuitable()
 
 
     return _properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU;
-//    return deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU;
+//    return _properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU;
 }
 
 void PhysicalDevice::discoverAndPopulateQueueFamilies()
@@ -164,7 +166,12 @@ std::string_view PhysicalDevice::name()
     return _properties.deviceName;
 }
 
-Engine::uint32 PhysicalDevice::version()
+uint32 PhysicalDevice::version()
 {
     return _properties.apiVersion;
+}
+
+PhysicalDevice::QueueFamilies PhysicalDevice::queueFamilies()
+{
+    return _queueFamilies;
 }

@@ -14,29 +14,37 @@ void Engine::Vulkan::ThrowError(VkResult code, char const *context)
     case VK_SUCCESS:
         return;
     case VK_ERROR_OUT_OF_HOST_MEMORY:
-        errorMessage += "out of host memory";
+        errorMessage += "out of host memory (VK_ERROR_OUT_OF_HOST_MEMORY)";
         break;
     case VK_ERROR_OUT_OF_DEVICE_MEMORY:
-        errorMessage += "out of device memory";
+        errorMessage += "out of device memory (VK_ERROR_OUT_OF_DEVICE_MEMORY)";
         break;
     case VK_ERROR_INITIALIZATION_FAILED:
-        errorMessage += "initialization failed";
+        errorMessage += "initialization failed (VK_ERROR_INITIALIZATION_FAILED)";
         break;
     case VK_ERROR_LAYER_NOT_PRESENT:
-        errorMessage += "layer not present";
+        errorMessage += "layer not present (VK_ERROR_LAYER_NOT_PRESENT)";
         break;
     case VK_ERROR_EXTENSION_NOT_PRESENT:
-        errorMessage += "extension not present";
+        errorMessage += "extension not present (VK_ERROR_EXTENSION_NOT_PRESENT)";
         break;
     case VK_ERROR_INCOMPATIBLE_DRIVER:
-        errorMessage += "incompatible driver";
+        errorMessage += "incompatible driver (VK_ERROR_INCOMPATIBLE_DRIVER)";
         break;
     case VK_INCOMPLETE:
-        errorMessage += "call may be success but incomplete results";
+        errorMessage += "call may be success but incomplete results (VK_INCOMPLETE)";
         break;
     case VK_ERROR_SURFACE_LOST_KHR:
-        errorMessage += "surface lost KHR";
+        errorMessage += "surface lost KHR (VK_ERROR_SURFACE_LOST_KHR)";
         break;
+    case VK_ERROR_FEATURE_NOT_PRESENT:
+        errorMessage += "unavailable feature (VK_ERROR_FEATURE_NOT_PRESENT)";
+        break;
+    case VK_ERROR_TOO_MANY_OBJECTS:
+        errorMessage += "too many objects (VK_ERROR_TOO_MANY_OBJECTS)";
+        break;
+    case VK_ERROR_DEVICE_LOST:
+        errorMessage += "device lost (VK_ERROR_DEVICE_LOST)";
     default:
         errorMessage += "unknown error";
         break;

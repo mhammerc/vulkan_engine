@@ -1,8 +1,6 @@
 #ifndef VULKAN_ENGINE_SURFACEKHR_H
 # define VULKAN_ENGINE_SURFACEKHR_H
 
-# include <gsl/gsl>
-
 # include "vulkan.h"
 # include "instance.h"
 # include "../frontend/window.h"
@@ -15,7 +13,7 @@ namespace Engine::Vulkan
  *
  * It also save a `VkInstance` handle but do not own it.
  */
-class SurfaceKHR
+class SurfaceKHR : public OnlyMovable
 {
 public:
     static SurfaceKHR create(not_null<Instance *> instance, not_null<Engine::Frontend::Window *> window);

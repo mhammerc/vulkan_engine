@@ -19,6 +19,22 @@ using int8 = int8_t;
 using int16 = int16_t;
 using int32 = int32_t;
 using int64 = int64_t;
+
+/**
+ * Inherit this class to simply delete copy and assignment operators, effectively allowing move-only.
+ */
+class OnlyMovable
+{
+public:
+    OnlyMovable() = default;
+    ~OnlyMovable() = default;
+
+    OnlyMovable(OnlyMovable &&) = default;
+    OnlyMovable(OnlyMovable const &) = delete;
+
+    OnlyMovable &operator=(OnlyMovable &&) = default;
+    OnlyMovable &operator=(OnlyMovable const &) = delete;
+};
 }
 
 #endif //VULKAN_ENGINE_VULKAN_ENGINE_H
