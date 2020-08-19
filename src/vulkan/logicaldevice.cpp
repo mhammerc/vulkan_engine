@@ -92,3 +92,23 @@ LogicalDevice::Queues LogicalDevice::queues() const
 {
     return _queues;
 }
+
+LogicalDevice::SurfaceCapabilities LogicalDevice::surfaceCapabilities() const
+{
+    return _physicalDevice.surfaceCapabilities();
+}
+
+VkPhysicalDeviceProperties LogicalDevice::properties() const
+{
+    return _physicalDevice.properties();
+}
+
+VkPhysicalDeviceFeatures LogicalDevice::features() const
+{
+    return _physicalDevice.features();
+}
+
+LogicalDevice::QueueFamilies LogicalDevice::queueFamilies() const
+{
+    return _physicalDevice.queueFamilies();
+}

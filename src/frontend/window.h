@@ -15,7 +15,8 @@ public:
     Window(int width, int height, std::string const &title);
     ~Window();
 
-    [[nodiscard]] gsl::not_null<GLFWwindow *> get() const;
+    [[nodiscard]] not_null<GLFWwindow *> get() const;
+    [[nodiscard]] VkExtent2D size() const;
 
 private:
     GLFWwindow *_window = nullptr;

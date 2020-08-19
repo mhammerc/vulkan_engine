@@ -175,3 +175,18 @@ PhysicalDevice::QueueFamilies PhysicalDevice::queueFamilies() const
 {
     return _queueFamilies;
 }
+
+PhysicalDevice::SurfaceCapabilities PhysicalDevice::surfaceCapabilities() const
+{
+    return _surfaceCapabilities;
+}
+
+VkPhysicalDeviceProperties PhysicalDevice::properties() const
+{
+    return _properties;
+}
+
+VkPhysicalDeviceFeatures PhysicalDevice::features() const
+{
+    return _features;
+}

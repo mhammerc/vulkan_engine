@@ -5,6 +5,7 @@
 #include <gsl/gsl>
 
 #include "../vulkan_engine.h"
+#include "vkhandle.h"
 
 // This header alias namespace `Engine` to global namespace for ease of use.
 using namespace Engine;
@@ -26,7 +27,6 @@ namespace Engine::Vulkan
 void ThrowError(VkResult code, char const *context = nullptr);
 
 bool areCStringEqual(char const *a, char const *b);
-
 }
 
 #endif //VULKAN_ENGINE_VULKAN_H

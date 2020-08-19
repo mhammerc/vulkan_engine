@@ -22,6 +22,10 @@ public:
         not_null<VkQueue> transfer;
     };
 
+    // Alias some types from `PhysicalDevice` to make the public-API cleaner.
+    using SurfaceCapabilities = PhysicalDevice::SurfaceCapabilities;
+    using QueueFamilies = PhysicalDevice::QueueFamilies;
+
     /**
      * `LogicalDevice` will take ownership of a `PhysicalDevice`.
      */
@@ -31,6 +35,10 @@ public:
     operator VkDevice() const;
 
     [[nodiscard]] Queues queues() const;
+    [[nodiscard]] QueueFamilies queueFamilies() const;
+    [[nodiscard]] SurfaceCapabilities surfaceCapabilities() const;
+    [[nodiscard]] VkPhysicalDeviceProperties properties() const;
+    [[nodiscard]] VkPhysicalDeviceFeatures features() const;
 
 private:
     LogicalDevice(not_null<VkDevice> device, PhysicalDevice &&physicalDevice, Queues queues);

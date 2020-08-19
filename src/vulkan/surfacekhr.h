@@ -22,12 +22,14 @@ public:
     static SurfaceKHR create(not_null<Instance *> instance, not_null<Engine::Frontend::Window *> window);
 
     [[nodiscard]] VkSurfaceKHR get() const;
+    [[nodiscard]] VkExtent2D size() const;
 
 private:
-    SurfaceKHR(not_null<VkSurfaceKHR> surface, not_null<Instance *> instance);
+    SurfaceKHR(not_null<VkSurfaceKHR> surface, not_null<Instance *> instance, not_null<Engine::Frontend::Window *> window);
 
     not_null<VkSurfaceKHR> _surface;
     not_null<Instance *> _instance;
+    not_null<Engine::Frontend::Window*> _window;
 };
 }
 

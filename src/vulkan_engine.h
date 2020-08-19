@@ -1,6 +1,8 @@
 #ifndef VULKAN_ENGINE_VULKAN_ENGINE_H
 #define VULKAN_ENGINE_VULKAN_ENGINE_H
 
+#include <cstdint>
+#include <gsl/gsl>
 #include <spdlog/spdlog.h>
 
 namespace Engine

@@ -47,7 +47,7 @@ public:
      * - Graphics Queue
      * - Presenting capability queue (to the surface)
      * - Availability of device extensions
-     * - Support a leat one surface format
+     * - Support a least one surface format
      * - Feature sampler anisotropy
      *
      * A `SurfaceKHR` instance is an abstraction layer to the native surface handle of the windowing system.
@@ -64,6 +64,9 @@ public:
     [[nodiscard]] std::string_view name() const;
     [[nodiscard]] uint32 version() const;
     [[nodiscard]] QueueFamilies queueFamilies() const;
+    [[nodiscard]] SurfaceCapabilities surfaceCapabilities() const;
+    [[nodiscard]] VkPhysicalDeviceProperties properties() const;
+    [[nodiscard]] VkPhysicalDeviceFeatures features() const;
 
 private:
     PhysicalDevice(not_null<VkPhysicalDevice> physicalDevice, not_null<Instance*> instance, not_null<SurfaceKHR*> surface);

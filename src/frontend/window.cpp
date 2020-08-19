@@ -30,3 +30,13 @@ gsl::not_null<GLFWwindow *> Window::get() const
 {
     return _window;
 }
+
+VkExtent2D Window::size() const
+{
+    int width {};
+    int height {};
+
+    glfwGetFramebufferSize(_window, &width, &height);
+
+    return {.width = static_cast<uint32_t>(width), .height = static_cast<uint32_t>(height)};
+}

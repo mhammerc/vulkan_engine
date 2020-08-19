@@ -45,6 +45,10 @@ void Engine::Vulkan::ThrowError(VkResult code, char const *context)
         break;
     case VK_ERROR_DEVICE_LOST:
         errorMessage += "device lost (VK_ERROR_DEVICE_LOST)";
+        break;
+    case VK_ERROR_NATIVE_WINDOW_IN_USE_KHR:
+        errorMessage += "native window in use (VK_ERROR_NATIVE_WINDOW_IN_USE_KHR)";
+        break;
     default:
         errorMessage += "unknown error";
         break;
