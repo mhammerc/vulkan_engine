@@ -31,7 +31,7 @@ private:
      */
     Image(not_null<VkImage> image);
 
-    not_null<VkImage> _image;
+    VkHandle<VkImage> _image;
 
     // If logical device isn't set (std::nullopt), then Image have now ownership over VkImage
     std::optional<not_null<LogicalDevice*>> _device;

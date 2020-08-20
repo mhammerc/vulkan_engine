@@ -4,6 +4,11 @@ using namespace Engine::Vulkan;
 
 SwapchainKHR::~SwapchainKHR()
 {
+    // Clear _imagesView first, which were create from _images.
+    _imagesViews.clear();
+    // Then, clear _images which were created by the swapchain.
+    _images.clear();
+    // Finally, delete the swapchain.
     vkDestroySwapchainKHR(*_device, _swapchain, nullptr);
 }
 

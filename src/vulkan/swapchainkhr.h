@@ -29,7 +29,7 @@ private:
     SwapchainKHR(not_null<VkSwapchainKHR> swapchain, not_null<LogicalDevice*> device, std::vector<Image> &&images,
     std::vector<ImageView> &&imagesViews, VkSurfaceFormatKHR format, PresentingAlgorithm presentingAlgorithm);
 
-    not_null<VkSwapchainKHR> _swapchain;
+    VkHandle<VkSwapchainKHR> _swapchain;
     not_null<LogicalDevice*> _device;
     std::vector<Image> _images;
     std::vector<ImageView> _imagesViews;

@@ -52,7 +52,7 @@ private:
 #endif
 );
 
-    not_null<VkInstance> _instance;
+    VkHandle<VkInstance> _instance;
 
 #ifndef NDEBUG
     not_null<VkDebugUtilsMessengerEXT> _debugMessenger;

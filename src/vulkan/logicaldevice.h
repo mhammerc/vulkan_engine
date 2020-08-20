@@ -43,7 +43,7 @@ public:
 private:
     LogicalDevice(not_null<VkDevice> device, PhysicalDevice &&physicalDevice, Queues queues);
 
-    not_null<VkDevice> _device;
+    VkHandle<VkDevice> _device;
     PhysicalDevice _physicalDevice;
 
     Queues _queues;

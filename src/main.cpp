@@ -45,27 +45,6 @@ int main()
     physicalDevice.reset(); // `physicalDevice` is now in a unspecified state.
 
     auto swapchain = Vulkan::SwapchainKHR::create(&device, &surface);
-//
-//    VkImageView a = reinterpret_cast<VkImageView>(1);
-//    VkImageView b = reinterpret_cast<VkImageView>(2);
-//    VkImageView c = reinterpret_cast<VkImageView>(3);
-//    uint64 d = 4;
-//
-//    Engine::Vulkan::VkHandle<VkImageView> o {a};
-//    Engine::Vulkan::VkHandle<VkImageView> p {b};
-
-//    o = p;
-//
-//Engine::Vulkan::VkHandle<VkImageView> z = VK_NULL_HANDLE;
-//gsl::not_null<int*> j = VK_NULL_HANDLE;
-//    o = std::move(p);
-//
-//    Engine::Vulkan::VkHandle<uint64> i {d};
-
-//    if (o)
-//    {
-//        spdlog::info("ok");
-//    }
 
     return 0;
 }

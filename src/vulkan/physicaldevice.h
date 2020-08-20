@@ -71,7 +71,7 @@ public:
 private:
     PhysicalDevice(not_null<VkPhysicalDevice> physicalDevice, not_null<Instance*> instance, not_null<SurfaceKHR*> surface);
 
-    not_null<VkPhysicalDevice> _physicalDevice;
+    VkHandle<VkPhysicalDevice> _physicalDevice;
     not_null<Instance *> _instance;
     not_null<SurfaceKHR *> _surface;
 

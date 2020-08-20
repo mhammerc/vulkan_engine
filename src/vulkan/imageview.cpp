@@ -35,7 +35,6 @@ ImageView::~ImageView()
 {
     if (_imageView != VK_NULL_HANDLE)
     {
-        spdlog::debug("destroy");
         vkDestroyImageView(*_device, _imageView, nullptr);
     }
 }
@@ -44,18 +43,3 @@ ImageView::operator VkImageView() const
 {
     return _imageView;
 }
-
-//ImageView &ImageView::operator=(ImageView &&other) noexcept
-//{
-//    _imageView = other._imageView;
-//    other._imageView = VK_NULL_HANDLE;
-//
-//    return *this;
-//}
-//
-//ImageView::ImageView(ImageView &&other) noexcept :
-//_imageView(std::move(other._imageView)),
-//_device(std::move(other._device))
-//{
-//    other._imageView = VK_NULL_HANDLE;
-//}

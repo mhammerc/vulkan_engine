@@ -12,7 +12,7 @@ namespace Engine::Vulkan
  * This class is a simple wrapper which takes ownership over any Vulkan Handle.
  *
  * To enforce ownership, this class enforce many rules:
- *  - Can not be constructed to VK_NULL_HANDLE (default constructed)
+ *  - Can not be constructed to VK_NULL_HANDLE or default constructed
  *  - Can be constructed with raw Vulkan handles.
  *  - Can not be copied or assigned.
  *  - If move-copied, handles are swapped between the two objects, effectively echanging ownership.
@@ -27,8 +27,10 @@ public:
     // Either a pointer or uint64 depending to platforms.
     static_assert(std::is_same<Handle, uint64_t>::value || std::is_assignable<Handle&, std::nullptr_t>::value, "Handle isn't a Vulkan handle.");
 
+    // allow constructing with an Handle
     template <typename = std::enable_if_t<!std::is_same<std::nullptr_t, Handle>::value>>
     VkHandle(Handle const &h) : _h(h) {};
+    // But disallow assignment from an Handle.
     VkHandle &operator=(Handle const &) = delete;
 
     constexpr VkHandle(VkHandle<Handle> &&other) noexcept : _h(other._h)
@@ -42,8 +44,12 @@ public:
         return *this;
     }
 
+    // Disallow copy and assignment operator
     VkHandle(VkHandle const &) = delete;
     VkHandle &operator=(VkHandle const &) = delete;
+    // prevents compilation from assigning `VK_NULL_HANDLE` or `0` or `nullptr`.
+    VkHandle(std::nullptr_t) = delete;
+    VkHandle& operator=(std::nullptr_t) = delete;
 
     constexpr Handle get() const
     {
@@ -52,12 +58,9 @@ public:
 
     constexpr operator Handle() const { return get(); }
 
-    // Can only return false on undefined-states after a move.
+    // Will return false if the handle is VK_NULL_HANDLE.
+    // It may happen after a move, or if assigning a null handle.
     constexpr explicit operator bool() const { return _h != VK_NULL_HANDLE; }
-
-    // prevents compilation from assigning a null handle
-    VkHandle(std::nullptr_t) = delete;
-    VkHandle& operator=(std::nullptr_t) = delete;
 
 private:
     Handle _h;

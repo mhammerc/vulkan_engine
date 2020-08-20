@@ -27,7 +27,7 @@ public:
 private:
     SurfaceKHR(not_null<VkSurfaceKHR> surface, not_null<Instance *> instance, not_null<Engine::Frontend::Window *> window);
 
-    not_null<VkSurfaceKHR> _surface;
+    VkHandle<VkSurfaceKHR> _surface;
     not_null<Instance *> _instance;
     not_null<Engine::Frontend::Window*> _window;
 };
