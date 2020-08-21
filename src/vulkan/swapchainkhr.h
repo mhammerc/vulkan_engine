@@ -15,6 +15,8 @@ class SwapchainKHR : public OnlyMovable
 public:
     [[nodiscard]] static SwapchainKHR create(not_null<LogicalDevice*> device, not_null<SurfaceKHR*> surface);
     ~SwapchainKHR();
+    SwapchainKHR (SwapchainKHR &&) noexcept = default;
+    SwapchainKHR &operator=(SwapchainKHR &&) noexcept = default;
     operator VkSwapchainKHR() const;
 
 private:

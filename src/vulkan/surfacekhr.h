@@ -17,6 +17,8 @@ class SurfaceKHR : public OnlyMovable
 {
 public:
     ~SurfaceKHR();
+    SurfaceKHR (SurfaceKHR &&) noexcept = default;
+    SurfaceKHR &operator=(SurfaceKHR &&) noexcept = default;
     operator VkSurfaceKHR() const;
 
     static SurfaceKHR create(not_null<Instance *> instance, not_null<Engine::Frontend::Window *> window);

@@ -39,6 +39,8 @@ public:
      * @param extensions Add additional layers on top of `requiredDeviceExtensions`
      */
     ~Instance();
+    Instance (Instance &&) noexcept = default;
+    Instance &operator=(Instance &&) noexcept = default;
     operator VkInstance() const;
 
     [[nodiscard]] static Instance create(std::span<char const *> layers = {}, std::span<char const *> extensions = {});
@@ -55,7 +57,7 @@ private:
     VkHandle<VkInstance> _instance;
 
 #ifndef NDEBUG
-    not_null<VkDebugUtilsMessengerEXT> _debugMessenger;
+    VkHandle<VkDebugUtilsMessengerEXT> _debugMessenger;
 #endif
 
     /**

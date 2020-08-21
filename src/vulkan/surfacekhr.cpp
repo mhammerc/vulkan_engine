@@ -10,7 +10,10 @@ _window(window)
 
 SurfaceKHR::~SurfaceKHR()
 {
-    vkDestroySurfaceKHR(*_instance, _surface, nullptr);
+    if (_surface)
+    {
+        vkDestroySurfaceKHR(*_instance, _surface, nullptr);
+    }
 }
 
 SurfaceKHR SurfaceKHR::create(not_null<Instance *> instance, not_null<Engine::Frontend::Window *> window)

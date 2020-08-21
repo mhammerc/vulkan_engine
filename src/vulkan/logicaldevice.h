@@ -32,6 +32,8 @@ public:
     [[nodiscard]] static LogicalDevice create(PhysicalDevice &&physicalDevice);
 
     ~LogicalDevice();
+    LogicalDevice (LogicalDevice &&) noexcept = default;
+    LogicalDevice &operator=(LogicalDevice &&) noexcept = default;
     operator VkDevice() const;
 
     [[nodiscard]] Queues queues() const;

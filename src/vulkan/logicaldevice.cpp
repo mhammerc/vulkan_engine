@@ -80,7 +80,10 @@ _queues(std::move(queues))
 
 LogicalDevice::~LogicalDevice()
 {
-    vkDestroyDevice(_device, nullptr);
+    if (_device)
+    {
+        vkDestroyDevice(_device, nullptr);
+    }
 }
 
 LogicalDevice::operator VkDevice() const

@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 #include "frontend/glfw3.h"
 #include "frontend/window.h"
@@ -12,6 +13,9 @@ using namespace Engine;
 
 int main()
 {
+    auto console = spdlog::stdout_color_mt("log", spdlog::color_mode::always);
+    spdlog::set_default_logger(console);
+//    spdlog::set_pattern("[%l] %v (+%oms)");
     spdlog::set_level(spdlog::level::debug);
 
     if (!Frontend::init())
@@ -42,7 +46,7 @@ int main()
     VK_VERSION_PATCH(physicalDevice->version()));
 
     auto device = Vulkan::LogicalDevice::create(std::move(*physicalDevice));
-    physicalDevice.reset(); // `physicalDevice` is now in a unspecified state.
+    physicalDevice.reset(); // `physicalDevice` is now in an unspecified state.
 
     auto swapchain = Vulkan::SwapchainKHR::create(&device, &surface);
 

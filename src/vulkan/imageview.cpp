@@ -33,7 +33,7 @@ _device(device)
 
 ImageView::~ImageView()
 {
-    if (_imageView != VK_NULL_HANDLE)
+    if (_imageView)
     {
         vkDestroyImageView(*_device, _imageView, nullptr);
     }

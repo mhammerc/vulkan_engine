@@ -6,17 +6,25 @@ using namespace Engine::Vulkan;
 Instance::~Instance()
 {
 #ifndef NDBUG
-    auto func = reinterpret_cast<PFN_vkDestroyDebugUtilsMessengerEXT>(vkGetInstanceProcAddr(_instance, "vkDestroyDebugUtilsMessengerEXT"));
-    if (!func)
+    if (_debugMessenger)
     {
-        ThrowError(VK_ERROR_EXTENSION_NOT_PRESENT, "loading vkDestroyDebugUtilsMessengerEXT");
-    }
+        auto func = reinterpret_cast<PFN_vkDestroyDebugUtilsMessengerEXT>(
+            vkGetInstanceProcAddr(_instance,
+                                  "vkDestroyDebugUtilsMessengerEXT"));
+        if (!func)
+        {
+            ThrowError(VK_ERROR_EXTENSION_NOT_PRESENT, "loading vkDestroyDebugUtilsMessengerEXT");
+        }
 
-    func(_instance, _debugMessenger, nullptr);
+        func(_instance, _debugMessenger, nullptr);
+    }
 #endif
 
-    vkDestroyInstance(_instance, nullptr);
-    spdlog::debug("Vulkan instance destroyed.");
+    if (_instance)
+    {
+        vkDestroyInstance(_instance, nullptr);
+        spdlog::debug("Vulkan instance destroyed.");
+    }
 }
 
 Instance::Instance(not_null<VkInstance> instance

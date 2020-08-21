@@ -18,6 +18,14 @@ namespace Engine::Vulkan
  *  - If move-copied, handles are swapped between the two objects, effectively echanging ownership.
  *  - If move-constructed, the other is now VK_NULL_HANDLE. It then leave the other to un UNDEFINED state.
  *  - Can be implicitly converted to the handle type it wraps.
+ *
+ *  Especially on destruction, you should always check for the validity of the handle.
+ *  An VkHandle instance should never hold VK_NULL_HANDLE except when it have been moved from.
+ *   - When the VkHandle have been moved from, the parent class may be destructed, leading to a destruction of the resource.
+ *     In that case, you should always verify for the existence of the handle before destroying.
+ *   - When the VKHandle have been moved from, the parent class will be in undefined state.
+ *     Therefore, still using the parent class is undefined behaviors.
+ *
  * @tparam Handle Any Vulkan handle
  */
 template <class Handle>

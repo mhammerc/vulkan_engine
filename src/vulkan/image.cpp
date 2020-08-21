@@ -16,7 +16,11 @@ Image::~Image()
 {
     if (_device.has_value())
     {
-        vkDestroyImage(**_device, _image, nullptr);
+        // We are the owner of the _image resource
+        if (_image)
+        {
+            vkDestroyImage(**_device, _image, nullptr);
+        }
     }
 }
 

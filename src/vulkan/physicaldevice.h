@@ -10,6 +10,9 @@
 
 namespace Engine::Vulkan
 {
+/**
+ * PhysicalDevice doesn't allocate any Vulkan Resources.
+ */
 class PhysicalDevice : public OnlyMovable
 {
 public:
@@ -60,6 +63,8 @@ public:
      */
     [[nodiscard]] static std::optional<PhysicalDevice> findBest(not_null<Instance*> instance, not_null<SurfaceKHR*> surface);
     operator VkPhysicalDevice() const;
+    PhysicalDevice (PhysicalDevice &&) noexcept = default;
+    PhysicalDevice &operator=(PhysicalDevice &&) noexcept = default;
 
     [[nodiscard]] std::string_view name() const;
     [[nodiscard]] uint32 version() const;

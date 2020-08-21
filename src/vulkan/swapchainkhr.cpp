@@ -9,7 +9,10 @@ SwapchainKHR::~SwapchainKHR()
     // Then, clear _images which were created by the swapchain.
     _images.clear();
     // Finally, delete the swapchain.
-    vkDestroySwapchainKHR(*_device, _swapchain, nullptr);
+    if (_swapchain)
+    {
+        vkDestroySwapchainKHR(*_device, _swapchain, nullptr);
+    }
 }
 
 SwapchainKHR::SwapchainKHR(not_null<VkSwapchainKHR> swapchain, not_null<LogicalDevice*> device,
@@ -172,7 +175,7 @@ SwapchainKHR::PresentingAlgorithm SwapchainKHR::findBestPresentMode(LogicalDevic
     return
     {
         .mode = VK_PRESENT_MODE_FIFO_KHR,
-        .bufferingSize = std::min(std::max(surfaceCapabilities.capabilities.minImageCount, 2u), surfaceCapabilities.capabilities.maxImageCount),
+        .bufferingSize = std::clamp(2u, surfaceCapabilities.capabilities.minImageCount, surfaceCapabilities.capabilities.maxImageCount)
     };
 }
 
