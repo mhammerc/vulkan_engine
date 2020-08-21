@@ -4,8 +4,9 @@
 #include "frontend/glfw3.h"
 #include "frontend/window.h"
 #include "vulkan/instance.h"
-#include "vulkan/physicaldevice.h"
 #include "vulkan/logicaldevice.h"
+#include "vulkan/physicaldevice.h"
+#include "vulkan/shadermodule.h"
 #include "vulkan/swapchainkhr.h"
 #include "vulkan_engine.h"
 
@@ -49,6 +50,9 @@ int main()
     physicalDevice.reset(); // `physicalDevice` is now in an unspecified state.
 
     auto swapchain = Vulkan::SwapchainKHR::create(&device, &surface);
+
+    auto vert = Vulkan::ShaderModule::createFromFile(&device, "shaders/basic.vert.spv", Vulkan::ShaderModule::Stage::Vertex);
+    auto frag = Vulkan::ShaderModule::createFromFile(&device, "shaders/basic.frag.spv", Vulkan::ShaderModule::Stage::Fragment);
 
     return 0;
 }

@@ -49,6 +49,9 @@ void Engine::Vulkan::ThrowError(VkResult code, char const *context)
     case VK_ERROR_NATIVE_WINDOW_IN_USE_KHR:
         errorMessage += "native window in use (VK_ERROR_NATIVE_WINDOW_IN_USE_KHR)";
         break;
+    case VK_ERROR_INVALID_SHADER_NV:
+        errorMessage += "invalid shader bytecode (VK_ERROR_INVALID_SHADER_NV)";
+        break;
     default:
         errorMessage += "unknown error";
         break;

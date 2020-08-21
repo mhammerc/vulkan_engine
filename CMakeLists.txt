@@ -24,6 +24,8 @@ set(SOURCES
         src/vulkan/logicaldevice.h
         src/vulkan/physicaldevice.cpp
         src/vulkan/physicaldevice.h
+        src/vulkan/shadermodule.cpp
+        src/vulkan/shadermodule.h
         src/vulkan/surfacekhr.cpp
         src/vulkan/surfacekhr.h
         src/vulkan/swapchainkhr.cpp
