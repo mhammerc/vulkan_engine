@@ -37,25 +37,33 @@ set(SOURCES
         src/vulkan_engine.h
         )
 
-add_executable(vulkan_engine)
+add_executable(vulkan_engine src/vulkan/pipeline.cpp src/vulkan/pipeline.h src/vulkan/model.cpp src/vulkan/model.h src/misc/tinyobjloader_impl.cpp src/vulkan/renderpass.cpp src/vulkan/renderpass.h src/vulkan/deviceallocator.cpp src/vulkan/deviceallocator.h src/vulkan/depthstencilimage.cpp src/vulkan/depthstencilimage.h)
 target_sources(vulkan_engine PRIVATE ${SOURCES})
 
+# Vulkan
 find_package(Vulkan REQUIRED)
 target_link_libraries(vulkan_engine PUBLIC ${Vulkan_LIBRARIES})
 target_include_directories(vulkan_engine PUBLIC ${Vulkan_INCLUDE_DIRS})
 
+# GLFW
 find_package(glfw3 3.3 REQUIRED)
 target_link_libraries(vulkan_engine PUBLIC glfw)
 target_include_directories(vulkan_engine PUBLIC glfw)
 
+# GLM
 find_package(glm REQUIRED)
 target_include_directories(vulkan_engine PUBLIC glm)
 
+# Microsoft GSL
 find_package(Microsoft.GSL CONFIG REQUIRED)
 target_link_libraries(vulkan_engine PUBLIC Microsoft.GSL::GSL)
 
+# spdlog
 add_subdirectory(deps/spdlog)
 target_link_libraries(vulkan_engine PUBLIC spdlog)
+
+# tinyobjloader
+target_include_directories(vulkan_engine PUBLIC deps/tinyobjloader)
 
 # GLSL to SPIR-V compiler
 find_program(SPIRV_COMPILER glslc DOC "GLSL to SPIR-V compiler" REQUIRED)
@@ -75,3 +83,9 @@ endforeach(SHADER)
 
 add_custom_target(shaders DEPENDS ${SPIRV_BINARY_FILES})
 add_dependencies(vulkan_engine shaders)
+
+# Copy resources
+add_custom_command(TARGET vulkan_engine PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/resources $<TARGET_FILE_DIR:vulkan_engine>/resources
+        )

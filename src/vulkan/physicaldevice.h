@@ -72,6 +72,7 @@ public:
     [[nodiscard]] SurfaceCapabilities surfaceCapabilities() const;
     [[nodiscard]] VkPhysicalDeviceProperties properties() const;
     [[nodiscard]] VkPhysicalDeviceFeatures features() const;
+    [[nodiscard]] VkPhysicalDeviceMemoryProperties memories() const;
 
 private:
     PhysicalDevice(not_null<VkPhysicalDevice> physicalDevice, not_null<Instance*> instance, not_null<SurfaceKHR*> surface);
@@ -84,6 +85,7 @@ private:
     SurfaceCapabilities _surfaceCapabilities {};
     VkPhysicalDeviceProperties _properties {};
     VkPhysicalDeviceFeatures _features {};
+    VkPhysicalDeviceMemoryProperties _memories {};
     bool _areRequiredDeviceExtensionsSupported = false;
 
     /**

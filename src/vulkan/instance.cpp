@@ -160,7 +160,7 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
     const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
     void* pUserData)
 {
-    spdlog::error("{}", pCallbackData->pMessage);
+    spdlog::trace("{}", pCallbackData->pMessage);
 
     return VK_FALSE;
 }

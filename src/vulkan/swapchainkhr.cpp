@@ -183,3 +183,8 @@ SwapchainKHR::operator VkSwapchainKHR() const
 {
     return _swapchain;
 }
+
+VkSurfaceFormatKHR SwapchainKHR::format() const
+{
+    return _format;
+}

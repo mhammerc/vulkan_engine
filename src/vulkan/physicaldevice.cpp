@@ -76,8 +76,8 @@ bool PhysicalDevice::isSuitable()
     }
 
 
-    return _properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU;
-//    return _properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU;
+//    return _properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU;
+    return _properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU;
 }
 
 void PhysicalDevice::discoverAndPopulateQueueFamilies()
@@ -159,6 +159,7 @@ void PhysicalDevice::discoverAndPopulateDeviceProperties()
 {
     vkGetPhysicalDeviceProperties(_physicalDevice, &_properties);
     vkGetPhysicalDeviceFeatures(_physicalDevice, &_features);
+    vkGetPhysicalDeviceMemoryProperties(_physicalDevice, &_memories);
 }
 
 std::string_view PhysicalDevice::name() const
@@ -189,4 +190,9 @@ VkPhysicalDeviceProperties PhysicalDevice::properties() const
 VkPhysicalDeviceFeatures PhysicalDevice::features() const
 {
     return _features;
+}
+
+VkPhysicalDeviceMemoryProperties PhysicalDevice::memories() const
+{
+    return _memories;
 }

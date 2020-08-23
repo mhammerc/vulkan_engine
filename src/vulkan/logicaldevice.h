@@ -3,6 +3,7 @@
 
 # include "vulkan.h"
 # include "physicaldevice.h"
+# include "deviceallocator.h"
 
 namespace Engine::Vulkan
 {
@@ -36,17 +37,21 @@ public:
     LogicalDevice &operator=(LogicalDevice &&) noexcept = default;
     operator VkDevice() const;
 
+    [[nodiscard]] DeviceAllocator &allocator();
+
     [[nodiscard]] Queues queues() const;
     [[nodiscard]] QueueFamilies queueFamilies() const;
     [[nodiscard]] SurfaceCapabilities surfaceCapabilities() const;
     [[nodiscard]] VkPhysicalDeviceProperties properties() const;
     [[nodiscard]] VkPhysicalDeviceFeatures features() const;
+    [[nodiscard]] VkPhysicalDeviceMemoryProperties memories() const;
 
 private:
     LogicalDevice(not_null<VkDevice> device, PhysicalDevice &&physicalDevice, Queues queues);
 
     VkHandle<VkDevice> _device;
     PhysicalDevice _physicalDevice;
+    std::unique_ptr<DeviceAllocator> _allocator;
 
     Queues _queues;
 };

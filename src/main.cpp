@@ -3,12 +3,19 @@
 
 #include "frontend/glfw3.h"
 #include "frontend/window.h"
+#include "vulkan/depthstencilimage.h"
+#include "vulkan/deviceallocator.h"
 #include "vulkan/instance.h"
 #include "vulkan/logicaldevice.h"
+#include "vulkan/model.h"
 #include "vulkan/physicaldevice.h"
+#include "vulkan/pipeline.h"
+#include "vulkan/renderpass.h"
 #include "vulkan/shadermodule.h"
 #include "vulkan/swapchainkhr.h"
 #include "vulkan_engine.h"
+
+#include <thread>
 
 using namespace Engine;
 
@@ -16,8 +23,8 @@ int main()
 {
     auto console = spdlog::stdout_color_mt("log", spdlog::color_mode::always);
     spdlog::set_default_logger(console);
-//    spdlog::set_pattern("[%l] %v (+%oms)");
-    spdlog::set_level(spdlog::level::debug);
+    spdlog::set_pattern("%^[%l]%$ (+%oms) %v");
+    spdlog::set_level(spdlog::level::trace);
 
     if (!Frontend::init())
     {
@@ -51,8 +58,18 @@ int main()
 
     auto swapchain = Vulkan::SwapchainKHR::create(&device, &surface);
 
+    Vulkan::DepthStencilImage depthImage = Vulkan::DepthStencilImage::create(&device, surface.size());
+
+    Vulkan::RenderPass renderPass = Vulkan::RenderPass::create(&device, swapchain, depthImage);
+
     auto vert = Vulkan::ShaderModule::createFromFile(&device, "shaders/basic.vert.spv", Vulkan::ShaderModule::Stage::Vertex);
     auto frag = Vulkan::ShaderModule::createFromFile(&device, "shaders/basic.frag.spv", Vulkan::ShaderModule::Stage::Fragment);
+
+    Vulkan::Pipeline pipeline {};
+    pipeline.addShaderStage(vert.toPipeline());
+    pipeline.addShaderStage(frag.toPipeline());
+    
+//    auto model = Vulkan::Model::loadFromFile("resources/models/viking_room.obj");
 
     return 0;
 }

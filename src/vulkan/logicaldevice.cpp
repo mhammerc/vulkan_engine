@@ -76,10 +76,17 @@ LogicalDevice::LogicalDevice(not_null<VkDevice> device, PhysicalDevice &&physica
 _device(device),
 _physicalDevice(std::move(physicalDevice)),
 _queues(std::move(queues))
-{}
+{
+    _allocator = std::make_unique<DeviceAllocator>(std::move(DeviceAllocator::create(this)));
+}
 
 LogicalDevice::~LogicalDevice()
 {
+    if (_allocator)
+    {
+        _allocator.reset();
+    }
+
     if (_device)
     {
         vkDestroyDevice(_device, nullptr);
@@ -114,4 +121,14 @@ VkPhysicalDeviceFeatures LogicalDevice::features() const
 LogicalDevice::QueueFamilies LogicalDevice::queueFamilies() const
 {
     return _physicalDevice.queueFamilies();
+}
+
+VkPhysicalDeviceMemoryProperties LogicalDevice::memories() const
+{
+    return _physicalDevice.memories();
+}
+
+DeviceAllocator &LogicalDevice::allocator()
+{
+    return *_allocator;
 }

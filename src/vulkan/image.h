@@ -16,6 +16,7 @@ public:
      * @param image The `VkImage` this instance reference.
      */
     [[nodiscard]] static Image createFromExistingWithoutOwnership(not_null<VkImage> image);
+    [[nodiscard]] static Image create(not_null<LogicalDevice*> device, VkExtent2D size, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage);
 
     ~Image();
     Image (Image &&) = default;
@@ -31,10 +32,17 @@ private:
      */
     Image(not_null<VkImage> image);
 
+    /**
+     * This constructor does take ownership of VkImage and its suballocation.
+     */
+    Image(not_null<VkImage> image, not_null<LogicalDevice*> device, DeviceAllocator::ResourceMemory suballocation);
+
     VkHandle<VkImage> _image;
 
-    // If logical device isn't set (std::nullopt), then Image have now ownership over VkImage
+    // If logical device is set, then this instance have ownership of VkImage.
+    // Otherwise, this instance doesn't have ownership of VkImage.
     std::optional<not_null<LogicalDevice*>> _device;
+    std::optional<DeviceAllocator::ResourceMemory> _suballocation;
 };
 }
 
