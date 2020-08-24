@@ -9,7 +9,7 @@
 #include "vulkan/logicaldevice.h"
 #include "vulkan/model.h"
 #include "vulkan/physicaldevice.h"
-#include "vulkan/pipeline.h"
+#include "vulkan/pipelinebuilder.h"
 #include "vulkan/renderpass.h"
 #include "vulkan/shadermodule.h"
 #include "vulkan/swapchainkhr.h"
@@ -62,13 +62,30 @@ int main()
 
     Vulkan::RenderPass renderPass = Vulkan::RenderPass::create(&device, swapchain, depthImage);
 
-    auto vert = Vulkan::ShaderModule::createFromFile(&device, "shaders/basic.vert.spv", Vulkan::ShaderModule::Stage::Vertex);
-    auto frag = Vulkan::ShaderModule::createFromFile(&device, "shaders/basic.frag.spv", Vulkan::ShaderModule::Stage::Fragment);
+    auto vert = Vulkan::ShaderModule::createFromSpirvFile(&device, "shaders/basic.vert.spv",
+                                                          Vulkan::ShaderModule::Stage::Vertex);
+    auto frag = Vulkan::ShaderModule::createFromSpirvFile(&device, "shaders/basic.frag.spv",
+                                                          Vulkan::ShaderModule::Stage::Fragment);
 
-    Vulkan::Pipeline pipeline {};
+    Vulkan::PipelineBuilder pipeline(std::move(renderPass), surface);
     pipeline.addShaderStage(vert.toPipeline());
     pipeline.addShaderStage(frag.toPipeline());
-    
+    pipeline.setVertexInputDescription<Vulkan::Model>();
+    pipeline.addDescriptorSetLayout(
+    {
+            {
+                .binding = 0,
+                .descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+                .stageFlags = VK_SHADER_STAGE_VERTEX_BIT,
+            },
+            {
+                .binding = 1,
+                .descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
+                .stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT,
+            }
+    });
+    auto pipelines = Vulkan::PipelineBuilder::build(&device, {&pipeline});
+
 //    auto model = Vulkan::Model::loadFromFile("resources/models/viking_room.obj");
 
     return 0;

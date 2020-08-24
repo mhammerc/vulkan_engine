@@ -15,8 +15,8 @@ public:
         Fragment = VK_SHADER_STAGE_FRAGMENT_BIT,
     };
 
-    [[nodiscard]] static ShaderModule createFromFile(not_null<LogicalDevice*> device, std::string const &path,
-                                                     Stage stage, std::string const &entrypoint = "main");
+    [[nodiscard]] static ShaderModule createFromSpirvFile(not_null<LogicalDevice*> device, std::string const &path,
+                                                          Stage stage, std::string const &entrypoint = "main");
 
     ~ShaderModule();
     ShaderModule (ShaderModule &&) noexcept = default;

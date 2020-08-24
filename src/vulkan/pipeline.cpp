@@ -2,17 +2,48 @@
 
 using namespace Engine::Vulkan;
 
-void Pipeline::addShaderStage(VkPipelineShaderStageCreateInfo shaderStage)
+Pipeline::~Pipeline()
 {
-    _shadersStages.push_back(shaderStage);
+    if (_pipeline)
+    {
+        vkDestroyPipeline(*_device, _pipeline, nullptr);
+    }
+
+    if (_layout)
+    {
+        vkDestroyPipelineLayout(*_device, _layout, nullptr);
+    }
+
+    for (auto const &layout : _descriptorSetsLayouts)
+    {
+        if (layout)
+        {
+            vkDestroyDescriptorSetLayout(*_device, layout, nullptr);
+        }
+    }
 }
 
-Pipeline::Pipeline()
+not_null<VkPipeline> Pipeline::pipeline() const
 {
-    VkPipelineVertexInputStateCreateInfo vertexInputInfo {};
-    vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-    vertexInputInfo.vertexBindingDescriptionCount = 0;
-    vertexInputInfo.pVertexBindingDescriptions = nullptr; // Optional
-    vertexInputInfo.vertexAttributeDescriptionCount = 0;
-    vertexInputInfo.pVertexAttributeDescriptions = nullptr; // Optional
+    return _pipeline;
 }
+
+not_null<VkPipelineLayout> Pipeline::layout() const
+{
+    return _layout;
+}
+
+not_null<RenderPass const *> Pipeline::renderPass() const
+{
+    return &_renderPass;
+}
+
+Pipeline::Pipeline(not_null<VkPipeline> pipeline, not_null<VkPipelineLayout> layout,
+                   std::vector<VkHandle<VkDescriptorSetLayout>> &&descriptorSetsLayouts,
+                   RenderPass &&renderPass, not_null<LogicalDevice *> device) :
+                   _pipeline(pipeline),
+                   _layout(layout),
+                   _descriptorSetsLayouts(std::move(descriptorSetsLayouts)),
+                   _renderPass(std::move(renderPass)),
+                   _device(device)
+{}

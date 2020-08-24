@@ -63,7 +63,7 @@ Model Model::loadFromFile(std::string const &path)
     return Model(std::move(vertices), std::move(indices));
 }
 
-VkVertexInputBindingDescription Model::bindingDescription() const
+VkVertexInputBindingDescription Model::bindingDescription()
 {
     VkVertexInputBindingDescription bindingDescription
     {
@@ -75,25 +75,25 @@ VkVertexInputBindingDescription Model::bindingDescription() const
     return bindingDescription;
 }
 
-std::array<VkVertexInputAttributeDescription, 2> Model::attributesDescriptions() const
+std::vector<VkVertexInputAttributeDescription> Model::attributesDescriptions()
 {
-    std::array<VkVertexInputAttributeDescription, 2> attributesDescriptions {};
+    std::vector<VkVertexInputAttributeDescription> attributesDescriptions {};
 
-    attributesDescriptions[0] = VkVertexInputAttributeDescription
+    attributesDescriptions.push_back(
     {
         .location = 0,
         .binding = 0,
         .format = VK_FORMAT_R32G32B32_SFLOAT,
         .offset = offsetof(Vertex, pos),
-    };
+    });
 
-    attributesDescriptions[1] = VkVertexInputAttributeDescription
+    attributesDescriptions.push_back(
     {
         .location = 1,
         .binding = 0,
         .format = VK_FORMAT_R32G32_SFLOAT,
         .offset = offsetof(Vertex, texCoord),
-    };
+    });
 
     return attributesDescriptions;
 }

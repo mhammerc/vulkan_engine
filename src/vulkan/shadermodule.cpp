@@ -24,7 +24,7 @@ _stage(stage),
 _entrypoint(std::move(entrypoint))
 {}
 
-ShaderModule ShaderModule::createFromFile(not_null<LogicalDevice *> device, std::string const &path, Stage stage, std::string const &entrypoint)
+ShaderModule ShaderModule::createFromSpirvFile(not_null<LogicalDevice *> device, std::string const &path, Stage stage, std::string const &entrypoint)
 {
     if (entrypoint.empty())
     {

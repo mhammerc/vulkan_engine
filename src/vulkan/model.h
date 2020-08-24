@@ -30,8 +30,8 @@ public:
     Model(Model &&) noexcept = default;
     Model &operator=(Model &&) noexcept = default;
 
-    [[nodiscard]] VkVertexInputBindingDescription bindingDescription() const;
-    [[nodiscard]] std::array<VkVertexInputAttributeDescription, 2> attributesDescriptions() const;
+    [[nodiscard]] static VkVertexInputBindingDescription bindingDescription();
+    [[nodiscard]] static std::vector<VkVertexInputAttributeDescription> attributesDescriptions();
 
 private:
     Model(std::vector<Vertex> &&vertices, std::vector<uint32> &&indices);

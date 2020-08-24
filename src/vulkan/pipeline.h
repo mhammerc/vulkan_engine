@@ -2,27 +2,35 @@
 #define VULKAN_ENGINE_PIPELINE_H
 
 #include "vulkan.h"
-#include <vector>
+#include "logicaldevice.h"
+#include "renderpass.h"
 
 namespace Engine::Vulkan
 {
-/**
- * This class allow to configure then construct the pipeline.
- *
- * On its initial state, it doesn't own any pipeline.
- */
-class Pipeline : public OnlyMovable
+class Pipeline : OnlyMovable
 {
+friend class PipelineBuilder;
+
 public:
-    Pipeline();
-    ~Pipeline() = default;
-    Pipeline (Pipeline &&) noexcept = default;
+    ~Pipeline();
+    Pipeline(Pipeline &&) noexcept = default;
     Pipeline &operator=(Pipeline &&) noexcept = default;
 
-    void addShaderStage(VkPipelineShaderStageCreateInfo shaderStage);
+    [[nodiscard]] not_null<VkPipeline> pipeline() const;
+    [[nodiscard]] not_null<VkPipelineLayout> layout() const;
+    [[nodiscard]] not_null<RenderPass const *> renderPass() const;
 
 private:
-    std::vector<VkPipelineShaderStageCreateInfo> _shadersStages;
+    Pipeline(not_null<VkPipeline> pipeline, not_null<VkPipelineLayout> layout,
+             std::vector<VkHandle<VkDescriptorSetLayout>> &&descriptorSetsLayouts,
+             RenderPass &&renderPass, not_null<LogicalDevice*> device);
+
+    VkHandle<VkPipeline> _pipeline;
+    VkHandle<VkPipelineLayout> _layout;
+    std::vector<VkHandle<VkDescriptorSetLayout>> _descriptorSetsLayouts;
+    RenderPass _renderPass;
+
+    not_null<LogicalDevice*> _device;
 };
 }
 
