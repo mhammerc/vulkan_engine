@@ -5,6 +5,7 @@
 #include "frontend/window.h"
 #include "vulkan/depthstencilimage.h"
 #include "vulkan/deviceallocator.h"
+#include "vulkan/graphicscommandpool.h"
 #include "vulkan/instance.h"
 #include "vulkan/logicaldevice.h"
 #include "vulkan/model.h"
@@ -85,6 +86,9 @@ int main()
             }
     });
     auto pipelines = Vulkan::PipelineBuilder::build(&device, {&pipeline});
+
+    auto graphicsCommandPool = Vulkan::GraphicsCommandPool::create(&device);
+
 
 //    auto model = Vulkan::Model::loadFromFile("resources/models/viking_room.obj");
 

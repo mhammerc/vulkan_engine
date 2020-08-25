@@ -30,14 +30,13 @@ set(SOURCES
         src/vulkan/surfacekhr.h
         src/vulkan/swapchainkhr.cpp
         src/vulkan/swapchainkhr.h
-        src/vulkan/vkhandle.cpp
         src/vulkan/vkhandle.h
         src/vulkan/vulkan.cpp
         src/vulkan/vulkan.h
         src/vulkan_engine.h
         )
 
-add_executable(vulkan_engine src/vulkan/pipelinebuilder.cpp src/vulkan/pipelinebuilder.h src/vulkan/model.cpp src/vulkan/model.h src/misc/tinyobjloader_impl.cpp src/vulkan/renderpass.cpp src/vulkan/renderpass.h src/vulkan/deviceallocator.cpp src/vulkan/deviceallocator.h src/vulkan/depthstencilimage.cpp src/vulkan/depthstencilimage.h src/vulkan/pipeline.cpp src/vulkan/pipeline.h)
+add_executable(vulkan_engine src/vulkan/pipelinebuilder.cpp src/vulkan/pipelinebuilder.h src/vulkan/model.cpp src/vulkan/model.h src/misc/tinyobjloader_impl.cpp src/vulkan/renderpass.cpp src/vulkan/renderpass.h src/vulkan/deviceallocator.cpp src/vulkan/deviceallocator.h src/vulkan/depthstencilimage.cpp src/vulkan/depthstencilimage.h src/vulkan/pipeline.cpp src/vulkan/pipeline.h src/vulkan/graphicscommandpool.cpp src/vulkan/graphicscommandpool.h)
 target_sources(vulkan_engine PRIVATE ${SOURCES})
 
 # Vulkan

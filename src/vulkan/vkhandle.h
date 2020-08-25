@@ -37,7 +37,13 @@ public:
 
     // allow constructing with an Handle
     template <typename = std::enable_if_t<!std::is_same<std::nullptr_t, Handle>::value>>
-    VkHandle(Handle const &h) : _h(h) {};
+    VkHandle(Handle const &h) : _h(h)
+    {
+        if (_h == VK_NULL_HANDLE)
+        {
+            throw std::runtime_error("VkHandle<> created with VK_NULL_HANDLE handle.");
+        }
+    };
     // But disallow assignment from an Handle.
     VkHandle &operator=(Handle const &) = delete;
 

@@ -7,7 +7,12 @@
 
 namespace Engine::Vulkan
 {
-class Pipeline : OnlyMovable
+/**
+ * Add documentation like:
+ * the pipeline own renderpass, etc
+ * Add also to PipelineBuilder
+ */
+class Pipeline : public OnlyMovable
 {
 friend class PipelineBuilder;
 
