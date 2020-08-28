@@ -21,6 +21,7 @@ public:
     operator VkSwapchainKHR() const;
 
     [[nodiscard]] VkSurfaceFormatKHR format() const;
+    [[nodiscard]] std::vector<not_null<ImageView*>> views();
 
 private:
     // Describe what algorithm will be used to display image to screen.

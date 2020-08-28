@@ -81,6 +81,7 @@ DeviceAllocator::ResourceMemory DeviceAllocator::allocate(VkMemoryRequirements r
     {
         throw std::runtime_error("Requested allocation size is higher than maximum allocation size allowed.");
     }
+
     auto memoryType = findMemoryType(requirements, properties);
 
     auto suballocation = suballocateMemory(memoryType, requirements);
@@ -134,6 +135,7 @@ void DeviceAllocator::allocateMemory(MemorySection section)
     {
         .memory = memory,
         .size = allocationSize,
+        .memoryType = std::get<0>(section),
     };
     _heaps[std::get<1>(section)].allocations.push_back(std::move(allocation));
 
@@ -163,6 +165,11 @@ std::optional<DeviceAllocator::ResourceMemory> DeviceAllocator::suballocateMemor
     for (auto &allocation : heap.allocations)
     {
         VkDeviceSize previousEnd = 0;
+
+        if (allocation.memoryType != std::get<0>(section))
+        {
+            continue;
+        }
 
         for (auto const &resource : allocation.resources)
         {

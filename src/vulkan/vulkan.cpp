@@ -52,6 +52,16 @@ void Engine::Vulkan::ThrowError(VkResult code, char const *context)
     case VK_ERROR_INVALID_SHADER_NV:
         errorMessage += "invalid shader bytecode (VK_ERROR_INVALID_SHADER_NV)";
         break;
+    case VK_ERROR_INVALID_OPAQUE_CAPTURE_ADDRESS:
+//    case VK_ERROR_INVALID_OPAQUE_CAPTURE_ADDRESS_KHR:
+        errorMessage += "VK_ERROR_INVALID_OPAQUE_CAPTURE_ADDRESS";
+        break;
+    case VK_ERROR_MEMORY_MAP_FAILED:
+        errorMessage += "can not map memory (VK_ERROR_MEMORY_MAP_FAILED)";
+        break;
+    case VK_ERROR_FRAGMENTATION_EXT:
+        errorMessage += "memory fragmentation (VK_ERROR_FRAGMENTATION_EXT)";
+        break;
     default:
         errorMessage += "unknown error";
         break;

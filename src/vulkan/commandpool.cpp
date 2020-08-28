@@ -1,8 +1,8 @@
-#include "graphicscommandpool.h"
+#include "commandpool.h"
 
 using namespace Engine::Vulkan;
 
-GraphicsCommandPool GraphicsCommandPool::create(not_null<LogicalDevice*> device)
+CommandPool CommandPool::create(not_null<LogicalDevice*> device)
 {
     uint32 queueFamily = device->queueFamilies().graphics.value();
     VkCommandPoolCreateInfo poolInfo {};
@@ -13,17 +13,17 @@ GraphicsCommandPool GraphicsCommandPool::create(not_null<LogicalDevice*> device)
     VkCommandPool commandPool = VK_NULL_HANDLE;
     ThrowError(vkCreateCommandPool(*device, &poolInfo, nullptr, &commandPool));
 
-    return GraphicsCommandPool(commandPool, queueFamily, device);
+    return CommandPool(commandPool, queueFamily, device);
 }
 
-GraphicsCommandPool::GraphicsCommandPool(VkHandle<VkCommandPool> commandPool, uint32 queueFamily,
-                                         not_null<LogicalDevice *> device) :
+CommandPool::CommandPool(VkHandle<VkCommandPool> commandPool, uint32 queueFamily,
+                         not_null<LogicalDevice *> device) :
                                          _commandPool(std::move(commandPool)),
                                          _queueFamily(queueFamily),
                                          _device(device)
 {}
 
-GraphicsCommandPool::~GraphicsCommandPool()
+CommandPool::~CommandPool()
 {
     if (_commandPool)
     {
@@ -31,7 +31,12 @@ GraphicsCommandPool::~GraphicsCommandPool()
     }
 }
 
-uint32 GraphicsCommandPool::queueFamily() const
+uint32 CommandPool::queueFamily() const
 {
     return _queueFamily;
+}
+
+CommandPool::operator VkCommandPool() const
+{
+    return _commandPool;
 }

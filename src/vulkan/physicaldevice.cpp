@@ -76,8 +76,8 @@ bool PhysicalDevice::isSuitable()
     }
 
 
-//    return _properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU;
-    return _properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU;
+    return _properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU;
+//    return _properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU;
 }
 
 void PhysicalDevice::discoverAndPopulateQueueFamilies()

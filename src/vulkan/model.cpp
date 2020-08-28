@@ -17,7 +17,7 @@ struct hash<Model::Vertex>
 };
 }
 
-Model Model::loadFromFile(std::string const &path)
+Model Model::createFromFile(std::string const &path)
 {
     tinyobj::attrib_t attrib;
     std::vector<tinyobj::shape_t> shapes;
@@ -103,6 +103,39 @@ _vertices(std::move(vertices)),
 _indices(std::move(indices))
 {
 
+}
+
+Buffer Model::toBuffer(not_null<LogicalDevice*> device, CommandPool &commandPool)
+{
+    usize verticesSize = sizeof(decltype(_vertices)::value_type) * _vertices.size();
+    usize indicesSize = sizeof(decltype(_indices)::value_type) * _indices.size();
+    // Copy vertices then into the same buffer
+    VkDeviceSize bufferSize = verticesSize + indicesSize;
+
+    auto stagingBuffer = Buffer::create(device, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, bufferSize,
+    VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+
+    {
+        void *data = nullptr;
+        stagingBuffer.map(&data);
+
+        memcpy(data, _vertices.data(), verticesSize);
+        memcpy(reinterpret_cast<uint8*>(data) + verticesSize, _indices.data(), indicesSize);
+
+        stagingBuffer.unmap();
+    }
+
+    auto buffer = Buffer::create(device,
+                                 VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT,
+                                 bufferSize, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+
+    auto cmdBuffer = CommandBuffer::create(device, &commandPool);
+    cmdBuffer.begin(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+    Buffer::cmdCopy(cmdBuffer, buffer, stagingBuffer, bufferSize);
+    cmdBuffer.end();
+    cmdBuffer.submit(true);
+
+    return buffer;
 }
 
 bool Model::Vertex::operator==(const Vertex &other) const

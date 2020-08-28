@@ -3,20 +3,22 @@
 
 #include "frontend/glfw3.h"
 #include "frontend/window.h"
+#include "vulkan/commandbuffer.h"
+#include "vulkan/commandpool.h"
 #include "vulkan/depthstencilimage.h"
-#include "vulkan/deviceallocator.h"
-#include "vulkan/graphicscommandpool.h"
+#include "vulkan/framebuffer.h"
 #include "vulkan/instance.h"
 #include "vulkan/logicaldevice.h"
 #include "vulkan/model.h"
 #include "vulkan/physicaldevice.h"
 #include "vulkan/pipelinebuilder.h"
 #include "vulkan/renderpass.h"
+#include "vulkan/sampler.h"
 #include "vulkan/shadermodule.h"
 #include "vulkan/swapchainkhr.h"
+#include "vulkan/uniformbuffer.h"
+#include "vulkan/descriptorpool.h"
 #include "vulkan_engine.h"
-
-#include <thread>
 
 using namespace Engine;
 
@@ -59,9 +61,18 @@ int main()
 
     auto swapchain = Vulkan::SwapchainKHR::create(&device, &surface);
 
+    // Maybe make an image class which auto-handle the view
     Vulkan::DepthStencilImage depthImage = Vulkan::DepthStencilImage::create(&device, surface.size());
 
+    // Mix somehow renderpass to framebuffer as they are linked together
     Vulkan::RenderPass renderPass = Vulkan::RenderPass::create(&device, swapchain, depthImage);
+    std::vector<Vulkan::Framebuffer> framebuffers;
+    for (auto swapchainView : swapchain.views())
+    {
+        auto f = Vulkan::Framebuffer::create(surface.size(), renderPass, &device,
+        {swapchainView, depthImage.view()});
+        framebuffers.push_back(std::move(f));
+    }
 
     auto vert = Vulkan::ShaderModule::createFromSpirvFile(&device, "shaders/basic.vert.spv",
                                                           Vulkan::ShaderModule::Stage::Vertex);
@@ -72,6 +83,7 @@ int main()
     pipeline.addShaderStage(vert.toPipeline());
     pipeline.addShaderStage(frag.toPipeline());
     pipeline.setVertexInputDescription<Vulkan::Model>();
+    // share the following object with descriptor pool with added fields
     pipeline.addDescriptorSetLayout(
     {
             {
@@ -87,10 +99,28 @@ int main()
     });
     auto pipelines = Vulkan::PipelineBuilder::build(&device, {&pipeline});
 
-    auto graphicsCommandPool = Vulkan::GraphicsCommandPool::create(&device);
+    auto graphicsCommandPool = Vulkan::CommandPool::create(&device);
+    auto commandsBuffers = Vulkan::CommandBuffer::createMany(1, &device, &graphicsCommandPool);
 
+    // Texture
+    auto texture = Vulkan::Image::createFromFile("resources/textures/viking_room.png", &device,
+    graphicsCommandPool, VK_FORMAT_R8G8B8A8_SRGB, VK_IMAGE_TILING_OPTIMAL,
+    VK_IMAGE_USAGE_SAMPLED_BIT);
+    auto textureView = Vulkan::ImageView::createFromImage(&texture, &device, VK_FORMAT_R8G8B8A8_SRGB, VK_IMAGE_ASPECT_COLOR_BIT);
+    auto sampler = Vulkan::Sampler::create(&device);
 
-//    auto model = Vulkan::Model::loadFromFile("resources/models/viking_room.obj");
+    // Model
+    auto model = Vulkan::Model::createFromFile("resources/models/viking_room.obj");
+    auto modelBuffer = model.toBuffer(&device, graphicsCommandPool);
+
+    // UBO
+    std::vector<Vulkan::UniformBuffer> ubos;
+    for (usize i = 0; i < swapchain.views().size(); ++i)
+    {
+        ubos.push_back(std::move(Vulkan::UniformBuffer::create(&device)));
+    }
+
+    auto descriptorPool = Vulkan::DescriptorPool::create(&device);
 
     return 0;
 }

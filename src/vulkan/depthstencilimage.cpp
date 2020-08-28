@@ -9,9 +9,9 @@ _view(std::move(view))
 
 DepthStencilImage DepthStencilImage::create(not_null<LogicalDevice*> device, VkExtent2D size)
 {
-    Image image = Image::create(device, size,
-                                VK_FORMAT_D32_SFLOAT_S8_UINT, VK_IMAGE_TILING_OPTIMAL,
-                                VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT);
+    Image image = Image::createEmpty(device, size,
+                                     VK_FORMAT_D32_SFLOAT_S8_UINT, VK_IMAGE_TILING_OPTIMAL,
+                                     VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT);
 
     ImageView view = ImageView::createFromImage(&image, device, VK_FORMAT_D32_SFLOAT_S8_UINT,
     VK_IMAGE_ASPECT_DEPTH_BIT);

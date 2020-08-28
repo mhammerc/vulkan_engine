@@ -1,8 +1,13 @@
 #ifndef VULKAN_ENGINE_IMAGE_H
-# define VULKAN_ENGINE_IMAGE_H
+#define VULKAN_ENGINE_IMAGE_H
+
+#include <string>
 
 #include "vulkan.h"
 #include "logicaldevice.h"
+#include "commandpool.h"
+#include "commandbuffer.h"
+#include "buffer.h"
 
 namespace Engine::Vulkan
 {
@@ -16,12 +21,16 @@ public:
      * @param image The `VkImage` this instance reference.
      */
     [[nodiscard]] static Image createFromExistingWithoutOwnership(not_null<VkImage> image);
-    [[nodiscard]] static Image create(not_null<LogicalDevice*> device, VkExtent2D size, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage);
+    [[nodiscard]] static Image createEmpty(not_null<LogicalDevice*> device, VkExtent2D size, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage);
+    [[nodiscard]] static Image createFromFile(std::string const &path, not_null<LogicalDevice*> device, CommandPool &commandPool, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage);
 
     ~Image();
-    Image (Image &&) = default;
+    Image(Image &&) = default;
     Image &operator=(Image &&) = default;
     operator VkImage() const;
+
+    void cmdTransition(CommandBuffer &commandBuffer, VkImageLayout oldLayout, VkImageLayout newLayout);
+    void copyFromBuffer(CommandBuffer &commandBuffer, Buffer &buffer, VkExtent2D size);
 
 private:
     /**

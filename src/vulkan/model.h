@@ -1,10 +1,14 @@
 #ifndef VULKAN_ENGINE_MODEL_H
 #define VULKAN_ENGINE_MODEL_H
 
-#include "vulkan.h"
-
 #include <array>
 #include <vector>
+
+#include "vulkan.h"
+#include "buffer.h"
+#include "logicaldevice.h"
+#include "commandpool.h"
+#include "commandbuffer.h"
 
 namespace Engine::Vulkan
 {
@@ -23,8 +27,9 @@ public:
 
         bool operator==(Vertex const &other) const;
     };
+    static_assert(std::is_standard_layout_v<Vertex>);
 
-    [[nodiscard]] static Model loadFromFile(std::string const &path);
+    [[nodiscard]] static Model createFromFile(std::string const &path);
 
     ~Model() = default;
     Model(Model &&) noexcept = default;
@@ -32,6 +37,8 @@ public:
 
     [[nodiscard]] static VkVertexInputBindingDescription bindingDescription();
     [[nodiscard]] static std::vector<VkVertexInputAttributeDescription> attributesDescriptions();
+
+    Buffer toBuffer(not_null<LogicalDevice*> device, CommandPool &commandPool);
 
 private:
     Model(std::vector<Vertex> &&vertices, std::vector<uint32> &&indices);

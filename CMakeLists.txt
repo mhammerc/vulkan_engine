@@ -36,7 +36,7 @@ set(SOURCES
         src/vulkan_engine.h
         )
 
-add_executable(vulkan_engine src/vulkan/pipelinebuilder.cpp src/vulkan/pipelinebuilder.h src/vulkan/model.cpp src/vulkan/model.h src/misc/tinyobjloader_impl.cpp src/vulkan/renderpass.cpp src/vulkan/renderpass.h src/vulkan/deviceallocator.cpp src/vulkan/deviceallocator.h src/vulkan/depthstencilimage.cpp src/vulkan/depthstencilimage.h src/vulkan/pipeline.cpp src/vulkan/pipeline.h src/vulkan/graphicscommandpool.cpp src/vulkan/graphicscommandpool.h)
+add_executable(vulkan_engine src/vulkan/pipelinebuilder.cpp src/vulkan/pipelinebuilder.h src/vulkan/model.cpp src/vulkan/model.h src/misc/tinyobjloader_impl.cpp src/vulkan/renderpass.cpp src/vulkan/renderpass.h src/vulkan/deviceallocator.cpp src/vulkan/deviceallocator.h src/vulkan/depthstencilimage.cpp src/vulkan/depthstencilimage.h src/vulkan/pipeline.cpp src/vulkan/pipeline.h src/vulkan/commandpool.cpp src/vulkan/commandpool.h src/vulkan/commandbuffer.cpp src/vulkan/commandbuffer.h src/vulkan/framebuffer.cpp src/vulkan/framebuffer.h src/misc/stb_image_impl.cpp src/vulkan/buffer.cpp src/vulkan/buffer.h src/vulkan/sampler.cpp src/vulkan/sampler.h src/vulkan/uniformbuffer.cpp src/vulkan/uniformbuffer.h src/vulkan/descriptorpool.cpp src/vulkan/descriptorpool.h)
 target_sources(vulkan_engine PRIVATE ${SOURCES})
 
 # Vulkan
@@ -63,6 +63,9 @@ target_link_libraries(vulkan_engine PUBLIC spdlog)
 
 # tinyobjloader
 target_include_directories(vulkan_engine PUBLIC deps/tinyobjloader)
+
+# stb single-files librairies
+target_include_directories(vulkan_engine PUBLIC deps/stb)
 
 # GLSL to SPIR-V compiler
 find_program(SPIRV_COMPILER glslc DOC "GLSL to SPIR-V compiler" REQUIRED)

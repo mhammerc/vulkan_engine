@@ -53,6 +53,7 @@ private:
         VkHandle<VkDeviceMemory> memory;
         VkDeviceSize size;
         VkDeviceSize subAllocatedSize = 0;
+        uint32 memoryType;
 
         // Keep track of all sub-allocations.
         // map<offset, size>

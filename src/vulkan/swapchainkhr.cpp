@@ -188,3 +188,15 @@ VkSurfaceFormatKHR SwapchainKHR::format() const
 {
     return _format;
 }
+
+std::vector<not_null<ImageView*>> SwapchainKHR::views()
+{
+    std::vector<not_null<ImageView*>> views;
+
+    for (auto &view : _imagesViews)
+    {
+        views.push_back(&view);
+    }
+
+    return views;
+}
