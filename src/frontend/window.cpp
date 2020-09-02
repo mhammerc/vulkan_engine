@@ -40,3 +40,8 @@ VkExtent2D Window::size() const
 
     return {.width = static_cast<uint32_t>(width), .height = static_cast<uint32_t>(height)};
 }
+
+bool Window::shouldClose()
+{
+    return glfwWindowShouldClose(_window);
+}

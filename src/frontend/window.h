@@ -18,6 +18,8 @@ public:
     [[nodiscard]] not_null<GLFWwindow *> get() const;
     [[nodiscard]] VkExtent2D size() const;
 
+    [[nodiscard]] bool shouldClose();
+
 private:
     GLFWwindow *_window = nullptr;
 };

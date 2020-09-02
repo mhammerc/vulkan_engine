@@ -47,3 +47,13 @@ Pipeline::Pipeline(not_null<VkPipeline> pipeline, not_null<VkPipelineLayout> lay
                    _renderPass(std::move(renderPass)),
                    _device(device)
 {}
+
+std::vector<not_null<VkDescriptorSetLayout>> Pipeline::descriptorSetsLayouts() const
+{
+    std::vector<not_null<VkDescriptorSetLayout>> result {};
+    for (auto const &layout : _descriptorSetsLayouts)
+    {
+        result.push_back(layout.get());
+    }
+    return result;
+}

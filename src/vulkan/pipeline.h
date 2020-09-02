@@ -24,6 +24,7 @@ public:
     [[nodiscard]] not_null<VkPipeline> pipeline() const;
     [[nodiscard]] not_null<VkPipelineLayout> layout() const;
     [[nodiscard]] not_null<RenderPass const *> renderPass() const;
+    [[nodiscard]] std::vector<not_null<VkDescriptorSetLayout>> descriptorSetsLayouts() const;
 
 private:
     Pipeline(not_null<VkPipeline> pipeline, not_null<VkPipelineLayout> layout,

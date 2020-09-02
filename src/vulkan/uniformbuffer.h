@@ -26,6 +26,8 @@ public:
     UniformBuffer(UniformBuffer &&) = default;
     UniformBuffer &operator=(UniformBuffer &&) = default;
 
+    Buffer &buffer();
+
 private:
     UniformBuffer(Buffer &&buffer);
 

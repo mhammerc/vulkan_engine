@@ -14,3 +14,8 @@ UniformBuffer UniformBuffer::create(not_null<LogicalDevice*> device)
 UniformBuffer::UniformBuffer(Buffer &&buffer) :
 _buffer(std::move(buffer))
 {}
+
+Buffer &UniformBuffer::buffer()
+{
+    return _buffer;
+}

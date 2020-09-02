@@ -62,6 +62,12 @@ void Engine::Vulkan::ThrowError(VkResult code, char const *context)
     case VK_ERROR_FRAGMENTATION_EXT:
         errorMessage += "memory fragmentation (VK_ERROR_FRAGMENTATION_EXT)";
         break;
+    case VK_ERROR_FRAGMENTED_POOL:
+        errorMessage += "memory pool fragmented (VK_ERROR_FRAGMENTED_POOL)";
+        break;
+    case VK_ERROR_OUT_OF_POOL_MEMORY:
+        errorMessage += "out of pool memory (VK_ERROR_OUT_OF_POOL_MEMORY)";
+        break;
     default:
         errorMessage += "unknown error";
         break;

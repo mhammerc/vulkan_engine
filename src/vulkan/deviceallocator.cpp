@@ -160,7 +160,7 @@ std::optional<DeviceAllocator::ResourceMemory> DeviceAllocator::suballocateMemor
 {
     HeapIndex heapIndex = std::get<1>(section);
     Heap &heap = _heaps[heapIndex];
-    VkDeviceSize size = nextPowerOfTwo(requirements.size);
+    VkDeviceSize size = std::max(nextPowerOfTwo(requirements.size), uint64 {256u});
 
     for (auto &allocation : heap.allocations)
     {

@@ -18,6 +18,7 @@
 #include "vulkan/swapchainkhr.h"
 #include "vulkan/uniformbuffer.h"
 #include "vulkan/descriptorpool.h"
+#include "vulkan/descriptorset.h"
 #include "vulkan_engine.h"
 
 using namespace Engine;
@@ -83,7 +84,8 @@ int main()
     pipeline.addShaderStage(vert.toPipeline());
     pipeline.addShaderStage(frag.toPipeline());
     pipeline.setVertexInputDescription<Vulkan::Model>();
-    // share the following object with descriptor pool with added fields
+    // Make the pipeline, descriptor sets, descriptor pools and descriptor layouts coherent. They actually are
+    // independent objects
     pipeline.addDescriptorSetLayout(
     {
             {
@@ -120,7 +122,21 @@ int main()
         ubos.push_back(std::move(Vulkan::UniformBuffer::create(&device)));
     }
 
+    // Descriptors
     auto descriptorPool = Vulkan::DescriptorPool::create(&device);
+    auto descriptorSets = Vulkan::DescriptorSet::createManyFromBuffers(&device,
+                                                                       &descriptorPool,
+                                                                       pipelines[0].descriptorSetsLayouts()[0],
+                                                                        ubos, sampler, textureView);
+
+    // Draw loop
+    while (!window.shouldClose())
+    {
+        glfwPollEvents();
+
+    }
+
+    vkDeviceWaitIdle(device);
 
     return 0;
 }

@@ -3,6 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/deps/spdlog" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/deps/stb" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/deps/tinyobjloader" vcs="Git" />
   </component>
 </project>

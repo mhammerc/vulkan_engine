@@ -14,6 +14,23 @@ set(SOURCES
         src/frontend/window.cpp
         src/frontend/window.h
         src/main.cpp
+        src/misc/stb_image_impl.cpp
+        src/misc/tinyobjloader_impl.cpp src/vulkan/buffer.cpp
+        src/vulkan/buffer.h
+        src/vulkan/commandbuffer.cpp
+        src/vulkan/commandbuffer.h
+        src/vulkan/commandpool.cpp
+        src/vulkan/commandpool.h
+        src/vulkan/depthstencilimage.cpp
+        src/vulkan/depthstencilimage.h
+        src/vulkan/descriptorpool.cpp
+        src/vulkan/descriptorpool.h
+        src/vulkan/descriptorset.cpp
+        src/vulkan/descriptorset.h
+        src/vulkan/deviceallocator.cpp
+        src/vulkan/deviceallocator.h
+        src/vulkan/framebuffer.cpp
+        src/vulkan/framebuffer.h
         src/vulkan/image.cpp
         src/vulkan/image.h
         src/vulkan/imageview.cpp
@@ -22,22 +39,34 @@ set(SOURCES
         src/vulkan/instance.h
         src/vulkan/logicaldevice.cpp
         src/vulkan/logicaldevice.h
+        src/vulkan/model.cpp
+        src/vulkan/model.h
         src/vulkan/physicaldevice.cpp
         src/vulkan/physicaldevice.h
+        src/vulkan/pipeline.cpp
+        src/vulkan/pipeline.h
+        src/vulkan/pipelinebuilder.cpp
+        src/vulkan/pipelinebuilder.h
+        src/vulkan/renderpass.cpp
+        src/vulkan/renderpass.h
+        src/vulkan/sampler.cpp
+        src/vulkan/sampler.h
         src/vulkan/shadermodule.cpp
         src/vulkan/shadermodule.h
         src/vulkan/surfacekhr.cpp
         src/vulkan/surfacekhr.h
         src/vulkan/swapchainkhr.cpp
         src/vulkan/swapchainkhr.h
+        src/vulkan/uniformbuffer.cpp
+        src/vulkan/uniformbuffer.h
         src/vulkan/vkhandle.h
         src/vulkan/vulkan.cpp
         src/vulkan/vulkan.h
         src/vulkan_engine.h
         )
 
-add_executable(vulkan_engine src/vulkan/pipelinebuilder.cpp src/vulkan/pipelinebuilder.h src/vulkan/model.cpp src/vulkan/model.h src/misc/tinyobjloader_impl.cpp src/vulkan/renderpass.cpp src/vulkan/renderpass.h src/vulkan/deviceallocator.cpp src/vulkan/deviceallocator.h src/vulkan/depthstencilimage.cpp src/vulkan/depthstencilimage.h src/vulkan/pipeline.cpp src/vulkan/pipeline.h src/vulkan/commandpool.cpp src/vulkan/commandpool.h src/vulkan/commandbuffer.cpp src/vulkan/commandbuffer.h src/vulkan/framebuffer.cpp src/vulkan/framebuffer.h src/misc/stb_image_impl.cpp src/vulkan/buffer.cpp src/vulkan/buffer.h src/vulkan/sampler.cpp src/vulkan/sampler.h src/vulkan/uniformbuffer.cpp src/vulkan/uniformbuffer.h src/vulkan/descriptorpool.cpp src/vulkan/descriptorpool.h)
-target_sources(vulkan_engine PRIVATE ${SOURCES})
+add_executable(vulkan_engine)
+target_sources(vulkan_engine PUBLIC ${SOURCES})
 
 # Vulkan
 find_package(Vulkan REQUIRED)
