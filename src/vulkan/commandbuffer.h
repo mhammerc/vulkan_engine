@@ -28,6 +28,8 @@ public:
     // Make an efficient asynchronous queues model.
     void submit(bool wait = false);
 
+    void reset();
+
 private:
     CommandBuffer(VkHandle<VkCommandBuffer> commandBuffer, not_null<LogicalDevice*> device, not_null<CommandPool*> commandPool);
 

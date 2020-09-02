@@ -20,6 +20,7 @@ public:
     Buffer &operator=(Buffer &&) = default;
     operator VkBuffer() const;
 
+    VkBuffer handle();
     void map(void **ptr);
     void unmap();
 

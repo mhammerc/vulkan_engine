@@ -126,7 +126,7 @@ Buffer Model::toBuffer(not_null<LogicalDevice*> device, CommandPool &commandPool
     }
 
     auto buffer = Buffer::create(device,
-                                 VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT,
+                                 VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT,
                                  bufferSize, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
     auto cmdBuffer = CommandBuffer::create(device, &commandPool);
@@ -136,6 +136,21 @@ Buffer Model::toBuffer(not_null<LogicalDevice*> device, CommandPool &commandPool
     cmdBuffer.submit(true);
 
     return buffer;
+}
+
+usize Model::verticesOffset()
+{
+    return 0;
+}
+
+usize Model::indexesOffset()
+{
+    return sizeof(decltype(_vertices)::value_type) * _vertices.size();
+}
+
+usize Model::indiceSize()
+{
+    return _indices.size();
 }
 
 bool Model::Vertex::operator==(const Vertex &other) const

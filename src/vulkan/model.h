@@ -38,6 +38,10 @@ public:
     [[nodiscard]] static VkVertexInputBindingDescription bindingDescription();
     [[nodiscard]] static std::vector<VkVertexInputAttributeDescription> attributesDescriptions();
 
+    usize verticesOffset();
+    usize indexesOffset();
+    usize indiceSize();
+
     Buffer toBuffer(not_null<LogicalDevice*> device, CommandPool &commandPool);
 
 private:

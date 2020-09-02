@@ -63,3 +63,8 @@ void Buffer::cmdCopy(CommandBuffer &commandBuffer, Buffer &dst, Buffer &src, VkD
     copyRegion.size = size;
     vkCmdCopyBuffer(commandBuffer, src, dst, 1, &copyRegion);
 }
+
+VkBuffer Buffer::handle()
+{
+    return _buffer;
+}

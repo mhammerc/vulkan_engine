@@ -8,7 +8,7 @@ CommandPool CommandPool::create(not_null<LogicalDevice*> device)
     VkCommandPoolCreateInfo poolInfo {};
     poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
     poolInfo.queueFamilyIndex = queueFamily;
-    poolInfo.flags = 0;
+    poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 
     VkCommandPool commandPool = VK_NULL_HANDLE;
     ThrowError(vkCreateCommandPool(*device, &poolInfo, nullptr, &commandPool));

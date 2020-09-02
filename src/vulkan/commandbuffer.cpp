@@ -89,3 +89,8 @@ CommandBuffer::operator VkCommandBuffer() const
 {
     return _commandBuffer;
 }
+
+void CommandBuffer::reset()
+{
+    ThrowError(vkResetCommandBuffer(_commandBuffer, 0));
+}
